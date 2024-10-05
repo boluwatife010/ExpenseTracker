@@ -42,3 +42,29 @@ export const getAUser = async (id: string): Promise<any> => {
     }
     return user;
 }
+//Get all users
+export const getAllUsers = async (): Promise<any> => {
+    const allUsers = await userModel.find();
+    if(!allUsers) {
+        throw new Error('Could not get all users')
+    }
+    return {allUsers}
+}
+// Update user
+export const updateUser = async(id: string, email: string, password: string, username:string) => {
+    const updating = await userModel.findById(id)
+    if(!updating) {
+        throw new Error ('Could not find user by this id.')
+    }
+    if(email) {
+        updating.email = email
+    }
+    if(username) {
+        updating.username = username
+    }
+    if(password) {
+        updating.password = password
+    } 
+    await updating.save();
+    return {updating}
+}
