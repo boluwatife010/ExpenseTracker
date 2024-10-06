@@ -1,4 +1,4 @@
-import { userModel } from "../models/user";
+import { userModel } from "../models/user.model";
 import bcrypt from 'bcryptjs'
 import { registerUserBody } from "../interfaces/user";
 import { Error } from "mongoose";
@@ -67,4 +67,11 @@ export const updateUser = async(id: string, email: string, password: string, use
     } 
     await updating.save();
     return {updating}
+}
+export const deleteUser = async (id: string) => {
+    const removing = await userModel.findByIdAndDelete(id)
+    if(!removing) {
+        throw new Error ('Could not delete user.')
+        return removing;
+    }
 }
