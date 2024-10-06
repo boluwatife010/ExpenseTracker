@@ -1,5 +1,6 @@
 import { userModel } from "../models/user.model";
 import bcrypt from 'bcryptjs'
+import { generateToken } from "../midddleware/auth";
 import { registerUserBody } from "../interfaces/user";
 import { Error } from "mongoose";
 // Register a new user
@@ -16,8 +17,9 @@ export const registerUser = async (body: registerUserBody) => {
     if (!registering) {
         throw new Error ('Could not register user.');
     }
+    const token = await generateToken(registering._id.toString());
     registering.save()
-    return registering
+    return {registering, token}
 }
 // Login an existing user
 export const loginUser = async (email: string, password: string): Promise<any> => {

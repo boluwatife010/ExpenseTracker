@@ -1,11 +1,12 @@
 import express from 'express';
+import authenticateToken from '../midddleware/auth';
 import { handleRegisterUser, handleUserLogin, handleGetUser, handleGetAllUsers, handleDeleteUser } from '../controllers/user.controller';
 import { getAllUsers, getAUser } from '../services/userservice';
 const router = express.Router();
-router.post('/register', handleRegisterUser)
+router.post('/register', authenticateToken, handleRegisterUser)
 router.post('/login', handleUserLogin)
-router.get('/:id', getAUser)
+router.get('/:id', authenticateToken, getAUser)
 router.get('/', getAllUsers);
-router.delete('/delete/:id', handleDeleteUser)
+router.delete('/delete/:id', authenticateToken, handleDeleteUser)
 
 export default router;
