@@ -1,36 +1,32 @@
 import mongoose from 'mongoose';
-import { expenseRequestBody } from '../interfaces/expenses';
+import { expenseRequestBody, validCategories } from '../interfaces/expenses';
 const Schema = mongoose.Schema;
 const expenseSchema = new Schema({
     title: {
         type: String,
-        required: true
+        required: true,
+        trim: true
     },
     amount: {
         type: Number,
-        required: true
+        required: true,
+        min: [0, 'Amount must be a positive number']
     },
-    groceries : {
-        type: String
-    },
-    leisure: {
-        type: String
-    },
-    electronics : {
-        type: String
-    },
-    utilities: {
-        type: String
-    },
-    clothing: {
-        type: String
-    },
-    health: {
-        type: String
-    },
-    other: {
-        type: String
-    }
+  categories: {
+    type: String,
+    required: true,
+    enum: Object.values(validCategories)
+  },
+  userId : {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  date: {
+    type: Date,
+    required: true,
+    default: Date.now()
+  }
 },
 {timestamps: true})
 export const expenseTrackerModel = mongoose.model<expenseRequestBody>('expense', expenseSchema)

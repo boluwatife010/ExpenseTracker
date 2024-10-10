@@ -26,7 +26,7 @@ const authenticateToken = async (req: Request, res: Response, next: NextFunction
         next();
 
     }   catch(err) {
-        res.status(401).send({mesage: 'Invalid token inputed.'})
+        res.status(401).send({mesage: 'Invalid token inputted.'})
     }
 }
 export default authenticateToken
