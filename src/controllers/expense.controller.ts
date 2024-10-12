@@ -82,3 +82,4 @@ export const handleDeleteExpense = async (req: Request, res: Response) => {
         return res.status(500).send({message: 'Internal server error.'})
     }
 }
+// handle the filtering of expenses
