@@ -1,5 +1,5 @@
 import express, {Request, Response} from 'express';
-import { createNewExpense, updateExpense, getAllExpenses, getSpecificExpense, deleteExpense } from '../services/expense.service';
+import { createNewExpense, updateExpense, getAllExpenses, getSpecificExpense, deleteExpense, filterExpense } from '../services/expense.service';
 export const handleCreateExpense = async (req: Request, res: Response) => {
     const {title, categories, amount, date} = req.body;
     if(!title && !categories && !amount && !date) {
@@ -83,3 +83,19 @@ export const handleDeleteExpense = async (req: Request, res: Response) => {
     }
 }
 // handle the filtering of expenses
+export const handleFilterExpense = async (req: Request, res: Response): Promise<any> => {
+    const {startDate, endDate, period} = req.params
+    if (!startDate && !endDate && !period) {
+        return res.status(400).send({message: 'Please provide one of the following details.'})
+    }
+    try {
+        const filter = await filterExpense(startDate, endDate, period)
+        if (!filter) {
+            return res.status(400).send({message: 'Could not filter expenses.'})
+        }
+        return res.status(200).send({message: 'Successfully filtered expense'})
+    }   catch(err) {
+        console.log(err, 'Invalid error')
+        return res.status(500).send({message: 'Internal server error.'})
+    }
+}
