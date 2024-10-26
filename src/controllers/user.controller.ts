@@ -12,7 +12,7 @@ export const handleRegisterUser = async (req: express.Request, res: express.Resp
         if(!register) {
             return res.status(400).send({message: 'Could not create a new user :('})
         }
-        return res.status(200).send({message: 'Successfully created new user.'})
+        return res.status(200).send({message: 'Successfully created new user.', register})
     }   catch (err) {
         console.log(err, 'Invalid err');
         return res.status(500).send({message: 'Internal server error.'}); 
@@ -29,7 +29,7 @@ export const handleUserLogin = async (req: express.Request, res: express.Respons
         if(!login) {
             return res.status(400).send({message: 'Could not login user :('})
         }
-        return res.status(200).send({message: 'Successfully logged in new user'})
+        return res.status(200).send({message: 'Successfully logged in new user', login})
     }   catch (err) {
         console.log(err, 'Invalid err');
         return res.status(500).send({message: 'Internal server error.'}); 
