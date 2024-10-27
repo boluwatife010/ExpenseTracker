@@ -1,12 +1,15 @@
 import { expenseTrackerModel } from "../models/expensetracker.model";
 import { expenseRequestBody, updateRequestBody } from "../interfaces/expenses";
 import { userModel } from "../models/user.model";
-export const createNewExpense = async (body: expenseRequestBody): Promise<any> => {
+export const createNewExpense = async (body: expenseRequestBody, id: string): Promise<any> => {
+    if (!id) {
+        throw new Error('Please provide a valid error.')
+    }
     const {title, amount, categories, date} = body
-    if(!title && !amount && !categories && !date) {
+    if(!title || !amount || !categories || !date) {
         throw new Error('Please provide the following details.')
     }
-    const createExpense = new expenseTrackerModel(title, amount, {categories, date})
+    const createExpense = new expenseTrackerModel({title, amount, categories, date}, id)
     if (!createExpense) {
         throw new Error('Could not create new expense :(')
     }

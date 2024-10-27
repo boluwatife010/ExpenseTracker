@@ -2,11 +2,15 @@ import express, {Request, Response} from 'express';
 import { createNewExpense, updateExpense, getAllExpenses, getSpecificExpense, deleteExpense, filterExpense } from '../services/expense.service';
 export const handleCreateExpense = async (req: Request, res: Response) => {
     const {title, categories, amount, date} = req.body;
+    const {id} = req.params
+    if(!id) {
+        return res.status(400).send({message: 'Please provide a valid id.'})
+    }
     if(!title && !categories && !amount && !date) {
         return res.status(400).send({message: 'Please provide the following details'})
     }
     try {
-        const create = await createNewExpense({title, date, categories, amount})
+        const create = await createNewExpense({title, date, categories, amount}, id)
         if (!create) {
             return res.status(400).send({message: 'Could not create new expense.'})
         }
@@ -46,7 +50,7 @@ export const handleUpdateExpense = async (req: Request, res: Response) => {
         if (!update) {
             return res.status(400).send({message: 'Could not update the following expense.'})
         }
-        return res.status(200).send({message: 'Successfully updated the expense :)'})
+        return res.status(200).send({message: 'Successfully updated the expense :)', update})
     }   catch(err) {
         console.log(err, 'Invalid error')
         return res.status(500).send({message: 'Internal server error.'})
@@ -59,7 +63,7 @@ export const handleGetAllExpense = async (req: Request, res: Response) => {
         if(!expenses) {
             return res.status(400).send({message: 'Could not get all the expenses'})
         }
-        return res.status(200).send({message: 'Successfully got all the expenses.'})
+        return res.status(200).send({message: 'Successfully got all the expenses.', expenses})
     }   catch(err) {
         console.log(err, 'Invalid error')
         return res.status(500).send({message: 'Internal server error.'})

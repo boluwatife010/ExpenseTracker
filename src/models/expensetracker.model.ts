@@ -17,10 +17,9 @@ const expenseSchema = new Schema({
     required: true,
     enum: Object.values(validCategories)
   },
-  userId : {
+  id : {
     type: Schema.Types.ObjectId,
-    ref: 'User',
-    required: true
+    ref: 'User'
   },
   date: {
     type: Date,
